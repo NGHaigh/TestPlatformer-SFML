@@ -24,12 +24,12 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/ DESTINATION ${CMAKE_CURRENT_BINARY_D
 set(SOURCE_FILES "src/main.cpp")
 
 # Add source to this project's executable.
-add_executable (TestPlatformer ${SOURCE_FILES} "src/Game.h" "src/Game.cpp")
+add_executable (TestPlatformer ${SOURCE_FILES} "src/Game.h" "src/Game.cpp" "src/Player/Player.h" "src/Player/Player.cpp")
 target_link_libraries(TestPlatformer PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET TestPlatformer PROPERTY CXX_STANDARD 20)
+  set_property(TARGET TestPlatformer PROPERTY CXX_STANDARD 23)
 endif()
 
 # TODO: Add tests and install targets if needed.
