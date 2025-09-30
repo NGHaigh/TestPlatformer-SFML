@@ -10,9 +10,9 @@ public:
 	float speed = 500.0f;
 	sf::Vector2f dir;
 	float velocity;
-
-private:
 	sf::RectangleShape player;
+private:
+	
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
 		target.draw(player);

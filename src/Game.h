@@ -11,6 +11,7 @@ class Game
 		void update(float dt);
 		void render();
 		void keyPressed();
+		bool checkCollision(sf::RectangleShape target, sf::RectangleShape collider);
 		
 
 	

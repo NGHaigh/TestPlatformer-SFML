@@ -31,6 +31,7 @@ void Game::update(float dt)
 {
 	keyPressed();
 	player.update(dt);
+	checkCollision(player.player, rectangle);
 }
 
 void Game::render()
@@ -80,4 +81,13 @@ void Game::keyPressed()
 		player.dir.y += 0;
 	}
 
+}
+
+bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider)
+{
+	if (target.getGlobalBounds().findIntersection(collider.getGlobalBounds()))
+	{
+		std::println("Colliding");
+	}
+	return false;
 }
