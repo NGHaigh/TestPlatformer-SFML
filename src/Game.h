@@ -8,9 +8,9 @@ class Game
 		Game(sf::RenderWindow& window);
 		~Game();
 		bool init();
-		void update();
+		void update(float dt);
 		void render();
-		void keyPressed(const sf::Event event);
+		void keyPressed();
 		
 
 	

@@ -16,6 +16,7 @@ int main()
 
 	game.init();
 	sf::Clock clock;
+	Player player;
 
 	while (window.isOpen())
 	{
@@ -27,18 +28,21 @@ int main()
 			if (event->is<sf::Event::Closed>())
 				window.close();
 
-			else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
-			{
-				game.keyPressed(*keyPressed);
-				if (keyPressed-> scancode == sf::Keyboard::Scancode::Escape)
-					window.close();
-			}
+			//else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
+			//{
+			//	game.keyPressed(*keyPressed);
+			//	if (keyPressed-> scancode == sf::Keyboard::Scancode::Escape)
+			//		window.close();
+			//}
 		}
 
-		game.update();
+		
+
+		game.update(dt);
 
 		window.clear();
 		game.render();
 		window.display();
+
 	}
 }

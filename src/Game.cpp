@@ -27,9 +27,10 @@ bool Game::init()
 	return false;
 }
 
-void Game::update()
+void Game::update(float dt)
 {
-	player.update();
+	keyPressed();
+	player.update(dt);
 }
 
 void Game::render()
@@ -38,13 +39,13 @@ void Game::render()
 	window.draw(player);
 }
 
-void Game::keyPressed(const sf::Event event)
+void Game::keyPressed()
 {
 	player.dir.x = 0;
+	player.dir.y = 0;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		std::println("Right");
 		player.dir.x += 1;
 	}
 	else
@@ -54,11 +55,29 @@ void Game::keyPressed(const sf::Event event)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
-		std::println("Left");
 		player.dir.x -= 1;
 	}
 	else
 	{
 		player.dir.x += 0;
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+	{
+		player.dir.y -= 1;
+	}
+	else
+	{
+		player.dir.y += 0;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+	{
+		player.dir.y += 1;
+	}
+	else
+	{
+		player.dir.y += 0;
+	}
+
 }

@@ -11,12 +11,14 @@ bool Player::init()
 	return false;
 }
 
-void Player::update()
+void Player::update(float dt)
 {
-	player.move(dir * speed);
+	normalise(dir);
+	player.move(dir * speed * dt);
 }
 
 void Player::move()
 {
 
 }
+w
