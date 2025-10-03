@@ -10,7 +10,7 @@ class Game
 		bool init();
 		void update(float dt);
 		void render();
-		void keyPressed();
+		void keyPressed(float dt);
 		bool checkCollision(sf::RectangleShape target, sf::RectangleShape collider);
 		
 

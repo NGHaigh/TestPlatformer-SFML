@@ -34,7 +34,7 @@ bool Game::init()
 
 void Game::update(float dt)
 {
-	keyPressed();
+	keyPressed(dt);
 	player.update(dt);
 	player.is_grounded = false;
 	checkCollision(player.player, rectangle);
@@ -48,7 +48,7 @@ void Game::render()
 	window.draw(player);
 }
 
-void Game::keyPressed()
+void Game::keyPressed(float dt)
 {
 	player.dir.x = 0;
 	player.dir.y = 0;
@@ -71,18 +71,19 @@ void Game::keyPressed()
 		player.dir.x += 0;
 	}
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-	//{
-	//	player.dir.y -= 1;
-	//}
-	//else
-	//{
-	//	player.dir.y += 0;
-	//}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && player.is_grounded)
+	{
+		player.velocity_y = player.jump_strength;
+		player.is_grounded = false;
+	}
+	else
+	{
+		player.dir.y += 0;
+	}
 
 	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	//{
-	//	player.dir.y += 1;
+	//	player.dir.y += 1;ddd
 	//}
 	//else
 	//{
@@ -121,14 +122,14 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 			if (direction.y == -1 && target.getPosition().y < colliderTop && player.dir.y >= 0)
 			{
 				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
-				std::cout << "Colliding on Top" << std::endl;
+				//std::cout << "Colliding on Top" << std::endl;
 				player.is_grounded = true;
 			}
 			else
 			{
 				// If not landing on top, just resolve the collision without setting grounded
 				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
-				std::cout << "Colliding on Bottom" << std::endl;
+				//std::cout << "Colliding on Bottom" << std::endl;
 			}
 			if(direction.y == -1)
 				player.is_grounded = true;

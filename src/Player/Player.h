@@ -10,7 +10,9 @@ public:
 	float speed = 100.0f;
 	sf::Vector2f dir;
 	sf::RectangleShape player;
-	float gravity = 0.98f;
+	float gravity = 98.0f;
+	float velocity_y = 0.0f;
+	float jump_strength = -100.0f;
 	bool is_grounded = false;
 
 private:
