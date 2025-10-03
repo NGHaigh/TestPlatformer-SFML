@@ -7,7 +7,7 @@ public:
 	bool init();
 	void update(float dt);
 	void move();
-	float speed = 500.0f;
+	float speed = 50.0f;
 	sf::Vector2f dir;
 	float velocity;
 	sf::RectangleShape player;
