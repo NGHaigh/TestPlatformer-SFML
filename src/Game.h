@@ -18,5 +18,6 @@ class Game
 	private:
 		sf::RenderWindow& window;
 		sf::RectangleShape rectangle;
+		sf::RectangleShape rectangle2;
 		Player player;
 };

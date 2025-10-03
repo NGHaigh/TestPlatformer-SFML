@@ -7,10 +7,12 @@ public:
 	bool init();
 	void update(float dt);
 	void move();
-	float speed = 50.0f;
+	float speed = 100.0f;
 	sf::Vector2f dir;
-	float velocity;
 	sf::RectangleShape player;
+	float gravity = 0.98f;
+	bool is_grounded = false;
+
 private:
 	
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override

@@ -15,6 +15,13 @@ void Player::update(float dt)
 {
 	normalise(dir);
 	player.move(dir * speed * dt);
+
+	if (is_grounded == false)
+	{
+		dir.y += gravity;
+		player.move(dir * speed * dt);
+	}
+	std::cout << is_grounded << std::endl;
 }
 
 void Player::move()

@@ -16,11 +16,17 @@ bool Game::init()
 {
 	//std::println("Init");
 
-	rectangle.setSize({ 500,100 });
+	rectangle.setSize({ 500,50});
 	rectangle.setScale({1,1});
 	rectangle.setOrigin(rectangle.getSize() / 2.0f);
 	rectangle.setPosition((sf::Vector2f)window.getSize() /2.0f);
 	rectangle.setFillColor(sf::Color::White);
+
+	rectangle2.setSize({ 500,50 });
+	rectangle2.setScale({ 1,1 });
+	rectangle2.setOrigin(rectangle.getSize() / 2.0f);
+	rectangle2.setPosition((sf::Vector2f)window.getSize() / 1.0f);
+	rectangle2.setFillColor(sf::Color::White);
 
 	player.init();
 	return false;
@@ -30,12 +36,15 @@ void Game::update(float dt)
 {
 	keyPressed();
 	player.update(dt);
+	player.is_grounded = false;
 	checkCollision(player.player, rectangle);
+	checkCollision(player.player, rectangle2);
 }
 
 void Game::render()
 {
 	window.draw(rectangle);
+	window.draw(rectangle2);
 	window.draw(player);
 }
 
@@ -62,23 +71,23 @@ void Game::keyPressed()
 		player.dir.x += 0;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-	{
-		player.dir.y -= 1;
-	}
-	else
-	{
-		player.dir.y += 0;
-	}
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+	//{
+	//	player.dir.y -= 1;
+	//}
+	//else
+	//{
+	//	player.dir.y += 0;
+	//}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-	{
-		player.dir.y += 1;
-	}
-	else
-	{
-		player.dir.y += 0;
-	}
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+	//{
+	//	player.dir.y += 1;
+	//}
+	//else
+	//{
+	//	player.dir.y += 0;
+	//}
 
 }
 
@@ -87,9 +96,10 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 	if (auto temp = target.getGlobalBounds().findIntersection(collider.getGlobalBounds()))
 	{
 		//std::println("Colliding");
-		std::cout << "Colliding\n";
+		//std::cout << "Colliding\n";
 		sf::Vector2f player_center = { target.getPosition().x + target.getSize().x / 2.0f, target.getPosition().y + target.getSize().y / 2.0f };
 		sf::Vector2f direction = { 1, 1 };
+
 		if (player_center.x < collider.getPosition().x + collider.getSize().x / 2.0f)
 		{
 			direction.x = -1;
@@ -102,23 +112,29 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 		if(temp->size.x < temp->size.y)
 		{
 			player.player.setPosition({ player.player.getPosition().x + temp->size.x * direction.x, player.player.getPosition().y });
+			std::cout << "Colliding on Right/Left" << std::endl;
 		}
 		else
 		{
-			player.player.setPosition({ player.player.getPosition().x, player.player.getPosition().y + temp->size.y * direction.y });
+			float playerBottom = target.getPosition().y + target.getSize().y;
+			float colliderTop = collider.getPosition().y;
+			if (direction.y == -1 && target.getPosition().y < colliderTop && player.dir.y >= 0)
+			{
+				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
+				std::cout << "Colliding on Top" << std::endl;
+				player.is_grounded = true;
+			}
+			else
+			{
+				// If not landing on top, just resolve the collision without setting grounded
+				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
+				std::cout << "Colliding on Bottom" << std::endl;
+			}
+			if(direction.y == -1)
+				player.is_grounded = true;
 		}
-
-
-
-		//if(target.getPosition().y + target.getSize().y / 2.0f < collider.getPosition().y)
-		//{
-		//	player.player.setPosition({ target.getPosition().x, collider.getPosition().y - collider.getSize().y / 2.0f - player.player.getSize().y });
-		//}
-		//
-		//else if (target.getPosition().x + target.getSize().x / 2.0f < collider.getPosition().x)
-		//{
-		//	player.player.setPosition({ collider.getPosition().x - collider.getSize().x / 2.0f - player.player.getSize().x , target.getPosition().y });
-		//}
+		return true;
 	}
+	
 	return false;
 }
