@@ -18,13 +18,13 @@ void Player::update(float dt)
 
 	if (is_grounded == false)
 	{
-		velocity_y += gravity * 2 * dt;
+		velocity_y += 2*(gravity) * dt;
 	}
 	else
 	{
 		velocity_y = 0;
 	}
-	player.move({ 0, velocity_y * dt });
+	player.move({ 0, velocity_y * dt * 2.0f });
 	//std::cout << is_grounded << std::endl;
 }
 

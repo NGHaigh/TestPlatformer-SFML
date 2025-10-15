@@ -17,14 +17,14 @@ bool Game::init()
 {
 	//std::println("Init");
 	constexpr std::array level = {
-	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
-	1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-	0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-	0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-	0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-	2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
-	0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
 	};
 
 
@@ -36,10 +36,11 @@ bool Game::init()
 			block_coords.emplace_back(i % 16, i / 16);
 			std::cout << block_coords.back().x << " ";
 			std::cout << block_coords.back().y << std::endl;
-			tangles.setPosition({ block_coords.back().x * 16, block_coords.back().y * 16});
-			tangles.setScale({ 1,1 });
-			tangles.setOrigin(tangles.getSize() / 2.0f);
-			tangles.setSize({ 50 ,50 });
+			tangles.emplace_back();
+			tangles.back().setOrigin(tangles.back().getSize() / 2.0f);
+			tangles.back().setSize({ 200 , 20 });
+			tangles.back().setScale({ 0.5, 0.5 });
+			tangles.back().setPosition({block_coords.back().x * 48 , block_coords.back().y * 62.5f});				
 		}
 	}
 
@@ -55,10 +56,12 @@ bool Game::init()
 	rectangle2.setPosition((sf::Vector2f)window.getSize() / 2.0f);
 	rectangle2.setFillColor(sf::Color::White);
 
+
+
 	player.init();
 
 	TileMap map;
-	if (!map.load("tileset.png", { 32, 32 }, level.data(), 16, 8))
+	if (!map.load("tileset.png", { 50, 62 }, level.data(), 16, 8))
 		return -1;
 
 	return false;
@@ -77,7 +80,10 @@ void Game::render()
 {
 	window.draw(rectangle);
 	window.draw(rectangle2);
-	window.draw(tangles);
+	for (auto& tangles : tangles)
+	{ 
+		window.draw(tangles);
+	}
 	window.draw(player);
 
 }

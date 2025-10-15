@@ -19,7 +19,7 @@ class Game
 		sf::RenderWindow& window;
 		sf::RectangleShape rectangle;
 		sf::RectangleShape rectangle2;
-		sf::RectangleShape tangles;
+		std::vector <sf::RectangleShape> tangles{};
 		Player player;
 
 		std::vector<int> spawn_tiles{ 1 };
