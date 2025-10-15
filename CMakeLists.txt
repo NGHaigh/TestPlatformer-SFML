@@ -24,7 +24,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Data/ DESTINATION ${CMAKE_CURRENT_BINARY_D
 set(SOURCE_FILES "src/main.cpp")
 
 # Add source to this project's executable.
-add_executable (TestPlatformer ${SOURCE_FILES} "src/Game.h" "src/Game.cpp" "src/Player/Player.h" "src/Player/Player.cpp")
+add_executable (TestPlatformer ${SOURCE_FILES} "src/Game.h" "src/Game.cpp" "src/Player/Player.h" "src/Player/Player.cpp" "src/Tilemap/Tilemap.h")
 target_link_libraries(TestPlatformer PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio)
 
 

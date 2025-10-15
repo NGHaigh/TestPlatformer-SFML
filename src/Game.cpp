@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include "Tilemap/Tilemap.h"
 
 Game::Game(sf::RenderWindow& game_window)
 	: window(game_window)
@@ -15,20 +16,51 @@ Game::~Game()
 bool Game::init()
 {
 	//std::println("Init");
+	constexpr std::array level = {
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+	1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+	0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+	0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+	0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+	2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+	0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+	};
 
-	rectangle.setSize({ 500,50});
+
+	std::vector<sf::Vector2f> block_coords{};
+	for (int i = 0; i < level.size(); i++)
+	{
+		if (isSpawnTile(level[i]))
+		{
+			block_coords.emplace_back(i % 16, i / 16);
+			std::cout << block_coords.back().x << " ";
+			std::cout << block_coords.back().y << std::endl;
+			tangles.setPosition({ block_coords.back().x * 16, block_coords.back().y * 16});
+			tangles.setScale({ 1,1 });
+			tangles.setOrigin(tangles.getSize() / 2.0f);
+			tangles.setSize({ 50 ,50 });
+		}
+	}
+
+	rectangle.setSize({ 1600,50});
 	rectangle.setScale({1,1});
 	rectangle.setOrigin(rectangle.getSize() / 2.0f);
-	rectangle.setPosition((sf::Vector2f)window.getSize() /2.0f);
+	rectangle.setPosition((sf::Vector2f)window.getSize());
 	rectangle.setFillColor(sf::Color::White);
 
 	rectangle2.setSize({ 500,50 });
 	rectangle2.setScale({ 1,1 });
 	rectangle2.setOrigin(rectangle.getSize() / 2.0f);
-	rectangle2.setPosition((sf::Vector2f)window.getSize() / 1.0f);
+	rectangle2.setPosition((sf::Vector2f)window.getSize() / 2.0f);
 	rectangle2.setFillColor(sf::Color::White);
 
 	player.init();
+
+	TileMap map;
+	if (!map.load("tileset.png", { 32, 32 }, level.data(), 16, 8))
+		return -1;
+
 	return false;
 }
 
@@ -45,7 +77,9 @@ void Game::render()
 {
 	window.draw(rectangle);
 	window.draw(rectangle2);
+	window.draw(tangles);
 	window.draw(player);
+
 }
 
 void Game::keyPressed(float dt)
