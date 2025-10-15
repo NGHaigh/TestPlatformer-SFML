@@ -52,8 +52,8 @@ bool Game::init()
 
 	rectangle2.setSize({ 500,50 });
 	rectangle2.setScale({ 1,1 });
-	rectangle2.setOrigin(rectangle.getSize() / 2.0f);
-	rectangle2.setPosition((sf::Vector2f)window.getSize() / 2.0f);
+	rectangle2.setOrigin(rectangle2.getSize() / 2.0f);
+	rectangle2.setPosition({ 400, 250 });
 	rectangle2.setFillColor(sf::Color::White);
 
 
@@ -72,8 +72,13 @@ void Game::update(float dt)
 	keyPressed(dt);
 	player.update(dt);
 	player.is_grounded = false;
-	checkCollision(player.player, rectangle);
-	checkCollision(player.player, rectangle2);
+	std::vector<sf::RectangleShape> colliders = tangles;
+	colliders.push_back(rectangle);
+	colliders.push_back(rectangle2);
+	for (auto& collider : colliders)
+	{
+		checkCollision(player.player, collider);
+	}
 }
 
 void Game::render()
@@ -170,6 +175,9 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 				// If not landing on top, just resolve the collision without setting grounded
 				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
 				//std::cout << "Colliding on Bottom" << std::endl;
+				if (player.velocity_y < 0)
+					player.velocity_y = 0; 
+				// Stop upward velocity when hitting the bottom
 			}
 			if(direction.y == -1)
 				player.is_grounded = true;
