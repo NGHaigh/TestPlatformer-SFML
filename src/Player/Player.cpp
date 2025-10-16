@@ -20,7 +20,7 @@ void Player::update(float dt)
 	{
 		velocity_y += 2*(gravity) * dt;
 	}
-	else
+	else if(is_grounded == true && velocity_y > 0)
 	{
 		velocity_y = 0;
 	}

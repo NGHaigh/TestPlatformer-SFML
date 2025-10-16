@@ -165,10 +165,13 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 			float playerBottom = target.getPosition().y + target.getSize().y;
 			float colliderTop = collider.getPosition().y;
 			if (direction.y == -1 && target.getPosition().y < colliderTop && player.dir.y >= 0)
-			{
-				player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
+			{			
 				//std::cout << "Colliding on Top" << std::endl;
-				player.is_grounded = true;
+				if (player.velocity_y < 0)
+					player.is_grounded = false;
+				else
+					player.is_grounded = true;
+					player.player.setPosition({ player.player.getPosition().x , player.player.getPosition().y + temp->size.y * direction.y });
 			}
 			else
 			{
