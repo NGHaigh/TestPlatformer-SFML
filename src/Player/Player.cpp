@@ -25,7 +25,16 @@ void Player::update(float dt)
 		velocity_y = 0;
 	}
 	player.move({ 0, velocity_y * dt * 2.0f });
-	//std::cout << is_grounded << std::endl;
+
+
+	if (!is_grounded && jump_delay > 0)
+	{
+		jump_delay -= dt;
+		if (jump_delay < 0)
+		{
+			jump_delay = 0;
+		}
+	}	
 }
 
 void Player::move()

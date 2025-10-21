@@ -18,12 +18,12 @@ bool Game::init()
 	//std::println("Init");
 	constexpr std::array level = {
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
 	0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+	0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0,
+	0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+	0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0,
 	1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
 	};
 
@@ -50,7 +50,7 @@ bool Game::init()
 	rectangle.setPosition((sf::Vector2f)window.getSize());
 	rectangle.setFillColor(sf::Color::White);
 
-	rectangle2.setSize({ 500,50 });
+	rectangle2.setSize({ 200, 20 });
 	rectangle2.setScale({ 1,1 });
 	rectangle2.setOrigin(rectangle2.getSize() / 2.0f);
 	rectangle2.setPosition({ 400, 250 });
@@ -116,10 +116,11 @@ void Game::keyPressed(float dt)
 		player.dir.x += 0;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && player.is_grounded)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && player.is_grounded && player.jump_delay == 0)
 	{
 		player.velocity_y = player.jump_strength;
 		player.is_grounded = false;
+		player.jump_delay = 1.0f;
 	}
 	else
 	{
@@ -158,7 +159,7 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 		if(temp->size.x < temp->size.y)
 		{
 			player.player.setPosition({ player.player.getPosition().x + temp->size.x * direction.x, player.player.getPosition().y });
-			std::cout << "Colliding on Right/Left" << std::endl;
+			//std::cout << "Colliding on Right/Left" << std::endl;
 		}
 		else
 		{
@@ -180,6 +181,7 @@ bool Game::checkCollision(sf::RectangleShape target, sf::RectangleShape collider
 				//std::cout << "Colliding on Bottom" << std::endl;
 				if (player.velocity_y < 0)
 					player.velocity_y = 0; 
+					player.jump_delay = 0;
 				// Stop upward velocity when hitting the bottom
 			}
 			if(direction.y == -1)

@@ -12,7 +12,8 @@ public:
 	sf::RectangleShape player;
 	float gravity = 98.0f;
 	float velocity_y = 0.0f;
-	float jump_strength = -200.0f;
+	float jump_strength = -150.0f;
+	float jump_delay = 1.0f;
 	bool is_grounded = false;
 
 private:
